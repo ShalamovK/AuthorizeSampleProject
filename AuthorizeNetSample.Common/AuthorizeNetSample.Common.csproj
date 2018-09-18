@@ -42,9 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IPaymentService.cs" />
-    <Compile Include="Models\Payment\Address.cs" />
+    <Compile Include="Models\Payment\CustomerAddress.cs" />
     <Compile Include="Models\Payment\CreditCard.cs" />
     <Compile Include="Models\Payment\CreditCardPaymentRequest.cs" />
+    <Compile Include="Models\Payment\InvoiceLine.cs" />
+    <Compile Include="Models\Payment\PaymentAuthentication.cs" />
     <Compile Include="Models\Payment\PaymentRequest.cs" />
     <Compile Include="Models\Payment\PaymentResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

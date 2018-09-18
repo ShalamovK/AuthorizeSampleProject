@@ -4,6 +4,6 @@ namespace AuthorizeNetSample.Common.Contracts
 {
 	public interface IPaymentService
 	{
-		PaymentResponse MakeCreditCardPayment(CreditCardPaymentRequest creditCardPayment);
+		PaymentResponse ProcessCreditCardPayment(CreditCardPaymentRequest creditCardPayment);
 	}
 }
