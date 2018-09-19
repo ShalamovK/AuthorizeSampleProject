@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AuthorizeNetSample.Common\AuthorizeNetSample.Common.csproj">
+      <Project>{50a58f9f-da62-4790-9659-7d69215be6da}</Project>
+      <Name>AuthorizeNetSample.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

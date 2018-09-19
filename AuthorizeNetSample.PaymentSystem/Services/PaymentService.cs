@@ -2,8 +2,10 @@
 using AuthorizeNet.Api.Controllers;
 using AuthorizeNet.Api.Controllers.Bases;
 using AuthorizeNetSample.Common.Contracts;
+using AuthorizeNetSample.Common.Enums.Payment;
+using AuthorizeNetSample.Common.Helpers;
 using AuthorizeNetSample.Common.Models.Payment;
-using System;
+using AuthorizeNetSample.PaymentSystem.Errors;
 using System.Collections.Generic;
 
 namespace AuthorizeNetSample.PaymentSystem.Services
@@ -12,13 +14,12 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 	{
 		public PaymentResponse ProcessCreditCardPayment(CreditCardPaymentRequest creditCardPayment)
 		{
-			//TODO: Make errors more informative
-			if (creditCardPayment.Card == null || creditCardPayment.LineItems == null)
+			if (creditCardPayment.Card == null)
 			{
 				return new PaymentResponse
 				{
 					Success = false,
-					Message = "Bad request"
+					Message = PaymentErrorsEnum.CreditCardNotFound.GetDescription()
 				};
 			}
 
@@ -59,17 +60,21 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 			}
 
 			List<lineItemType> lines = new List<lineItemType>();
-			List<InvoiceLine> requestLines = creditCardPayment.LineItems;
 
-			for (int i = 0; i < creditCardPayment.LineItems.Count; i++)
+			if (creditCardPayment.LineItems?.Count > 0)
 			{
-				lines.Add(new lineItemType
+				List<InvoiceLine> requestLines = creditCardPayment.LineItems;
+
+				for (int i = 0; i < creditCardPayment.LineItems.Count; i++)
 				{
-					itemId = requestLines[i].Id,
-					name = requestLines[i].Name,
-					unitPrice = requestLines[i].Price,
-					quantity = requestLines[i].Quantity
-				});
+					lines.Add(new lineItemType
+					{
+						itemId = requestLines[i].Id,
+						name = requestLines[i].Name,
+						unitPrice = requestLines[i].Price,
+						quantity = requestLines[i].Quantity
+					});
+				}
 			}
 
 			paymentType paymentType = new paymentType
@@ -77,7 +82,16 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 				Item = creditCard
 			};
 
-			ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+			switch (creditCardPayment.Enviroment)
+			{
+				case PaymentProcessingEnviroments.SANDBOX:
+					ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+					break;
+				case PaymentProcessingEnviroments.PRODUCTION:
+					ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.PRODUCTION;
+					break;
+			}
+
 			ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
 			{
 				Item = creditCardPayment.Authentication.ApiTransactionKey,
@@ -100,6 +114,68 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 			};
 
 			createTransactionController controller = new createTransactionController(request);
+			controller.Execute();
+
+			var response = controller.GetApiResponse();
+
+			if (response == null)
+				return new PaymentResponse
+				{
+					Success = false,
+					Message = PaymentErrorsEnum.NullResponse.GetDescription()
+				};
+
+			if (response.messages.resultCode == messageTypeEnum.Ok)
+			{
+				if (response.transactionResponse.messages != null)
+				{
+					string message = response.transactionResponse.messages[0].description;
+					string transactionId = response.transactionResponse.transId;
+					string authCode = response.transactionResponse.authCode;
+
+					return new PaymentResponse
+					{
+						Success = true,
+						TransactionId = transactionId,
+						AuthKey = authCode,
+						Message = message
+					};
+				}
+				else
+				{
+					string message;
+
+					if (response.transactionResponse.errors != null)
+						message = response.transactionResponse.errors[0].errorText;
+					else
+						message = PaymentErrorsEnum.TransactionFailed.GetDescription();
+
+					return new PaymentResponse
+					{
+						Success = false,
+						Message = message
+					};
+				}
+			}
+			else
+			{
+				string message;
+
+				if(response.transactionResponse?.errors != null)
+				{
+					message = response.transactionResponse.errors[0].errorText;
+				}
+				else
+				{
+					message = response.messages.message[0].text;
+				}
+
+				return new PaymentResponse
+				{
+					Success = false,
+					Message = message
+				};
+			}
 		}
 	}
 }

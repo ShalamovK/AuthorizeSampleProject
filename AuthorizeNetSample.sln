@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Main", "AuthorizeNetSample\AuthorizeNetSample.Main.csproj", "{A6352B41-2369-4637-8C59-3F31D9A69654}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50A58F9F-DA62-4790-9659-7D69215BE6DA} = {50A58F9F-DA62-4790-9659-7D69215BE6DA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.PaymentSystem", "AuthorizeNetSample.PaymentSystem\AuthorizeNetSample.PaymentSystem.csproj", "{0AF185A8-8487-411B-9A76-1135BFB9AD92}"
 EndProject

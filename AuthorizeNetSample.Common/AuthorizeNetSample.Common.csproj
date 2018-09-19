@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IPaymentService.cs" />
+    <Compile Include="Enums\Payment\PaymentProcessingEnviroments.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Models\Payment\CustomerAddress.cs" />
     <Compile Include="Models\Payment\CreditCard.cs" />
     <Compile Include="Models\Payment\CreditCardPaymentRequest.cs" />
