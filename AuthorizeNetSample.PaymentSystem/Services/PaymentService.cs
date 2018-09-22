@@ -1,20 +1,20 @@
 ﻿using AuthorizeNet.Api.Contracts.V1;
 using AuthorizeNet.Api.Controllers;
-using AuthorizeNet.Api.Controllers.Bases;
-using AuthorizeNetSample.Common.Contracts;
-using AuthorizeNetSample.Common.Enums.Payment;
-using AuthorizeNetSample.Common.Helpers;
-using AuthorizeNetSample.Common.Models.Payment;
-using AuthorizeNetSample.PaymentSystem.Errors;
+using AuthorizeNetSample.PaymentSystem.Contracts;
+using AuthorizeNetSample.PaymentSystem.Common;
+using AuthorizeNetSample.PaymentSystem.Helpers;
+using AuthorizeNetSample.PaymentSystem.Models.Payment;
 using System.Collections.Generic;
+using AuthorizeNetSample.PaymentSystem.Services.Base;
+using AuthorizeNetSample.PaymentSystem.Requests;
 
 namespace AuthorizeNetSample.PaymentSystem.Services
 {
-	public class PaymentService : IPaymentService
+	public class PaymentService : BaseService, IPaymentService
 	{
-		public PaymentResponse ProcessCreditCardPayment(CreditCardPaymentRequest creditCardPayment)
+		public PaymentResponse ProcessCreditCardPayment(CreditCardPaymentRequest request)
 		{
-			if (creditCardPayment.Card == null)
+			if (request.Card == null)
 			{
 				return new PaymentResponse
 				{
@@ -25,47 +25,47 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 
 			creditCardType creditCard = new creditCardType
 			{
-				cardCode = creditCardPayment.Card.CVC,
-				cardNumber = creditCardPayment.Card.CardNumber,
-				expirationDate = creditCardPayment.Card.ExpDate,
+				cardCode = request.Card.CVC,
+				cardNumber = request.Card.CardNumber,
+				expirationDate = request.Card.ExpDate,
 			};
 
 			customerAddressType shipAddress = null;
 			customerAddressType billAddress = null;
 
-			if (creditCardPayment.BillAddress != null)
+			if (request.BillAddress != null)
 			{
 				billAddress = new customerAddressType
 				{
-					firstName = creditCardPayment.BillAddress.FirstName,
-					lastName = creditCardPayment.BillAddress.LastName,
-					city = creditCardPayment.BillAddress.City,
-					country = creditCardPayment.BillAddress.Country,
-					address = creditCardPayment.BillAddress.Address,
-					zip = creditCardPayment.BillAddress.Zip
+					firstName = request.BillAddress.FirstName,
+					lastName = request.BillAddress.LastName,
+					city = request.BillAddress.City,
+					country = request.BillAddress.Country,
+					address = request.BillAddress.Address,
+					zip = request.BillAddress.Zip
 				};
 			}
 
-			if (creditCardPayment.ShipAddress != null)
+			if (request.ShipAddress != null)
 			{
 				shipAddress = new customerAddressType
 				{
-					firstName = creditCardPayment.ShipAddress.FirstName,
-					lastName = creditCardPayment.ShipAddress.LastName,
-					city = creditCardPayment.ShipAddress.City,
-					country = creditCardPayment.ShipAddress.Country,
-					address = creditCardPayment.ShipAddress.Address,
-					zip = creditCardPayment.ShipAddress.Zip
+					firstName = request.ShipAddress.FirstName,
+					lastName = request.ShipAddress.LastName,
+					city = request.ShipAddress.City,
+					country = request.ShipAddress.Country,
+					address = request.ShipAddress.Address,
+					zip = request.ShipAddress.Zip
 				};
 			}
 
 			List<lineItemType> lines = new List<lineItemType>();
 
-			if (creditCardPayment.LineItems?.Count > 0)
+			if (request.LineItems?.Count > 0)
 			{
-				List<InvoiceLine> requestLines = creditCardPayment.LineItems;
+				List<InvoiceLine> requestLines = request.LineItems;
 
-				for (int i = 0; i < creditCardPayment.LineItems.Count; i++)
+				for (int i = 0; i < request.LineItems.Count; i++)
 				{
 					lines.Add(new lineItemType
 					{
@@ -82,38 +82,23 @@ namespace AuthorizeNetSample.PaymentSystem.Services
 				Item = creditCard
 			};
 
-			switch (creditCardPayment.Enviroment)
-			{
-				case PaymentProcessingEnviroments.SANDBOX:
-					ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
-					break;
-				case PaymentProcessingEnviroments.PRODUCTION:
-					ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.PRODUCTION;
-					break;
-			}
-
-			ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
-			{
-				Item = creditCardPayment.Authentication.ApiTransactionKey,
-				name = creditCardPayment.Authentication.ApiLoginId,
-				ItemElementName = ItemChoiceType.transactionKey
-			};
+			Init(request);
 
 			transactionRequestType requestType = new transactionRequestType
 			{
-				amount = creditCardPayment.Amount,
+				amount = request.Amount,
 				billTo = billAddress,
 				shipTo = shipAddress,
 				payment = paymentType,
 				lineItems = lines.ToArray()
 			};
 
-			createTransactionRequest request = new createTransactionRequest
+			createTransactionRequest transactionRequest = new createTransactionRequest
 			{
 				transactionRequest = requestType
 			};
 
-			createTransactionController controller = new createTransactionController(request);
+			createTransactionController controller = new createTransactionController(transactionRequest);
 			controller.Execute();
 
 			var response = controller.GetApiResponse();

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AuthorizeNetSample.PaymentSystem.Errors
+namespace AuthorizeNetSample.PaymentSystem.Common
 {
 	public enum PaymentErrorsEnum
 	{

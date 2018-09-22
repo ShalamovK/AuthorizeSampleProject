@@ -1,4 +1,4 @@
-﻿namespace AuthorizeNetSample.Common.Enums.Payment
+﻿namespace AuthorizeNetSample.PaymentSystem.Common
 {
 	public enum PaymentProcessingEnviroments
 	{

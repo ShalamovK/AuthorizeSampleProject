@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.PaymentS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Common", "AuthorizeNetSample.Common\AuthorizeNetSample.Common.csproj", "{50A58F9F-DA62-4790-9659-7D69215BE6DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.DAL", "AuthorizeNetSample.DAL\AuthorizeNetSample.DAL.csproj", "{8061DD8B-F415-4C27-B8C1-2D845357E13D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.BLL", "AuthorizeNetSample.BLL\AuthorizeNetSample.BLL.csproj", "{1753CB9F-D4B8-4EF7-9720-B7BBC3D38B63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +34,14 @@ Global
 		{50A58F9F-DA62-4790-9659-7D69215BE6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50A58F9F-DA62-4790-9659-7D69215BE6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50A58F9F-DA62-4790-9659-7D69215BE6DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8061DD8B-F415-4C27-B8C1-2D845357E13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8061DD8B-F415-4C27-B8C1-2D845357E13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8061DD8B-F415-4C27-B8C1-2D845357E13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8061DD8B-F415-4C27-B8C1-2D845357E13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1753CB9F-D4B8-4EF7-9720-B7BBC3D38B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1753CB9F-D4B8-4EF7-9720-B7BBC3D38B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1753CB9F-D4B8-4EF7-9720-B7BBC3D38B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1753CB9F-D4B8-4EF7-9720-B7BBC3D38B63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿namespace AuthorizeNetSample.Common.Models.Payment
+﻿namespace AuthorizeNetSample.PaymentSystem.Models.Payment
 {
 	public class CustomerAddress
 	{
