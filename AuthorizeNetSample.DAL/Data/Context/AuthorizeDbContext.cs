@@ -1,10 +1,6 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity;
-using System;
-using System.Collections.Generic;
+using AuthorizeNetSample.DAL.Data.Maps;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuthorizeNetSample.DAL.Data.Context
 {
@@ -12,10 +8,18 @@ namespace AuthorizeNetSample.DAL.Data.Context
 	{
 		public AuthorizeDbContext() : base("AuthorizeDbConnection")
 		{
-			
+			this.Configuration.LazyLoadingEnabled = true;
 		}
 
 		public DbSet<Customer> Customers { get; set; }
 		public DbSet<Payment> Payments { get; set; }
+		public DbSet<CreditCard> CreditCards { get; set; }
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			modelBuilder.Configurations.Add(new AddressMap());
+			modelBuilder.Configurations.Add(new CreditCardMap());
+			modelBuilder.Configurations.Add(new CustomerMap());
+		}
 	}
 }
