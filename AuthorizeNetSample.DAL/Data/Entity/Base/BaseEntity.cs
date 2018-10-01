@@ -14,9 +14,12 @@ namespace AuthorizeNetSample.DAL.Data.Entity.Base
 
 	}
 
-	public interface IEntity { }
+	public interface IEntity
+	{
+	}
 
 	public interface IEntity<Type> : IEntity where Type : struct
 	{
+		Type Id { get; set; }
 	}
 }

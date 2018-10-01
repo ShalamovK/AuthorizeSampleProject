@@ -1,7 +1,9 @@
 ﻿using AuthorizeNetSample.DAL.Data.Context;
 using AuthorizeNetSample.DAL.Data.Entity.Base;
 using AuthorizeNetSample.DAL.Repository.Contracts;
+using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace AuthorizeNetSample.DAL.Repository
 {
@@ -30,12 +32,17 @@ namespace AuthorizeNetSample.DAL.Repository
 
 		public void Detach(T entity)
 		{
-			throw new System.NotImplementedException();
+			var contextEntity = _DbContext.Entry(entity);
+
+			if (contextEntity != null)
+			{
+				contextEntity.State = EntityState.Detached;
+			}
 		}
 
 		public T FindById<TKey>(TKey Id) where TKey : struct
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException(); //_DbSet.Where(e => e.)
 		}
 
 		public void Reload(T entity)
