@@ -12,6 +12,7 @@ namespace AuthorizeNetSample.DAL.Data.Maps
 			Property(c => c.LastFourDigits).HasMaxLength(4);
 			Property(c => c.ExpDate).HasMaxLength(4);
 			HasRequired(c => c.Customer).WithMany(cust => cust.CreditCards);
+            HasOptional(c => c.BillingAddress).WithRequired(a => a.CreditCard);
 		}
 	}
 }

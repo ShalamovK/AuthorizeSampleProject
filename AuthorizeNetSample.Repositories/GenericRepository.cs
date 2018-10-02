@@ -12,9 +12,9 @@ namespace AuthorizeNetSample.Repositories
 		private AuthorizeDbContext _DbContext;
 		private DbSet<T> _DbSet;
 
-		public GenericRepository(IContextAdapter adapter)
+		public GenericRepository(AuthorizeDbContext dbContext)
 		{
-			_DbContext = adapter.GetContext();
+			_DbContext = dbContext;
 			_DbSet = _DbContext.Set<T>();
 		}
 

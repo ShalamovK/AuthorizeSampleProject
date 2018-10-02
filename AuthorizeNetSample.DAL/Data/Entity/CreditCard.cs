@@ -1,5 +1,4 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity.Base;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuthorizeNetSample.DAL.Data.Entity
@@ -20,6 +19,6 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		//Navigation
 		public int CustomerId { get; set; }
 		public virtual Customer Customer { get; set; }
-		public virtual ICollection<Address> BillingAddress { get; set; }
+		public virtual BillingAddress BillingAddress { get; set; }
 	}
 }

@@ -13,8 +13,6 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 
 		//Navigation
 		public int CustomerId { get; set; }
-		public int? CreditCardId { get; set; }
 		public virtual Customer Customer { get; set; }
-		public virtual CreditCard CreditCard { get; set; }
 	}
 }
