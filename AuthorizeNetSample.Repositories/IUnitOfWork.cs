@@ -1,11 +1,15 @@
-﻿using AuthorizeNetSample.DAL.Data.Entity.Base;
+﻿using AuthorizeNetSample.DAL.Data.Context;
+using AuthorizeNetSample.DAL.Data.Entity.Base;
+using AuthorizeNetSample.Repositories.Config;
+using System;
 
 namespace AuthorizeNetSample.Repositories
 {
-	public interface IUnitOfWork
-	{
-		IGenericRepository<T> GetRepository<T>() where T : class, IEntity;
-		void SaveChanges();
-		void SaveChangesAsync();
-	}
+    public interface IUnitOfWork : IDisposable {
+        AuthorizeDbContext Context { get; }
+        void RollBack();
+        void SaveChanges();
+        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity;
+        IAuthorizeConfigRepository AuthorizeConfig { get; }
+    }
 }

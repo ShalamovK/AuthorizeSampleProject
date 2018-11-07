@@ -50,12 +50,14 @@
   <ItemGroup>
     <Compile Include="Data\Context\AuthorizeDbContext.cs" />
     <Compile Include="Data\Entity\Address.cs" />
+    <Compile Include="Data\Entity\AuthorizeConfig.cs" />
     <Compile Include="Data\Entity\Base\BaseEntity.cs" />
     <Compile Include="Data\Entity\BillingAddress.cs" />
     <Compile Include="Data\Entity\CreditCard.cs" />
     <Compile Include="Data\Entity\Customer.cs" />
     <Compile Include="Data\Entity\Payment.cs" />
     <Compile Include="Data\Maps\AddressMap.cs" />
+    <Compile Include="Data\Maps\AuthorizeConfigMap.cs" />
     <Compile Include="Data\Maps\BillingAddressMap.cs" />
     <Compile Include="Data\Maps\CreditCardMap.cs" />
     <Compile Include="Data\Maps\CustomerMap.cs" />

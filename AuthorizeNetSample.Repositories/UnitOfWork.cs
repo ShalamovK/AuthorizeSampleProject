@@ -1,30 +1,47 @@
 ﻿using AuthorizeNetSample.DAL.Data.Context;
 using AuthorizeNetSample.DAL.Data.Entity.Base;
+using AuthorizeNetSample.Repositories.Config;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Text;
 
 namespace AuthorizeNetSample.Repositories
 {
-	public class UnitOfWork : IUnitOfWork
-	{
-		private Dictionary<Type, IGenericRepository<IEntity>> _repositories;
-        private readonly AuthorizeDbContext _authorizeDbContext;
-        private readonly Logger _logger;
-
-		public UnitOfWork()
-		{
-			_repositories = new Dictionary<Type, IGenericRepository<IEntity>>();
-            _authorizeDbContext = new AuthorizeDbContext();
-            _logger = LogManager.GetCurrentClassLogger();
+    public class UnitOfWork : IUnitOfWork {
+        public UnitOfWork() {
+            Context = new AuthorizeDbContext();
         }
 
-		public void SaveChanges()
-		{
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Dictionary<Type, object> _repos = new Dictionary<Type, object>();
+        private IAuthorizeConfigRepository _authorizeConfigRepository;
+
+        public AuthorizeDbContext Context { get; private set; }
+
+        public void RollBack() {
+            var changedEntries = Context.ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Modified)) {
+                entry.CurrentValues.SetValues(entry.OriginalValues);
+                entry.State = EntityState.Unchanged;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added)) {
+                entry.State = EntityState.Detached;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted)) {
+                entry.State = EntityState.Unchanged;
+            }
+        }
+
+        public void SaveChanges() {
             try {
-                _authorizeDbContext.SaveChanges();
+                Context.SaveChanges();
             } catch (DbEntityValidationException ex) {
                 var sb = new StringBuilder();
 
@@ -42,19 +59,20 @@ namespace AuthorizeNetSample.Repositories
             }
         }
 
-		public void SaveChangesAsync()
-		{
-			throw new NotImplementedException();
-		}
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity {
+            if (!_repos.ContainsKey(typeof(TEntity))) {
+                _repos.Add(typeof(TEntity), new GenericRepository<TEntity>(Context));
+            }
+            return _repos[typeof(TEntity)] as IGenericRepository<TEntity>;
+        }
 
-		public IGenericRepository<T> GetRepository<T>() where T : class, IEntity
-		{
-			if (!_repositories.ContainsKey(typeof(T)))
-			{
-				_repositories.Add(typeof(T), new GenericRepository<T>(_authorizeDbContext) as IGenericRepository<IEntity>);
-			}
+        public void Dispose() {
+            Context?.Dispose();
+            Context = null;
+        }
 
-			return _repositories[typeof(T)] as GenericRepository<T>;
-		}
-	}
+        public IAuthorizeConfigRepository AuthorizeConfig {
+            get { return _authorizeConfigRepository ?? (_authorizeConfigRepository = new AuthorizeConfigRepository(Context)); }
+        }
+    }
 }

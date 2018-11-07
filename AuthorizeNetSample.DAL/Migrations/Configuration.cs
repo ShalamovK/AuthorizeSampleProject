@@ -16,19 +16,15 @@ namespace AuthorizeNetSample.DAL.Migrations
             Database.SetInitializer(new DropCreateDatabaseAlways<AuthorizeDbContext>());
         }
 
-		private bool saveChanges = false;
-		private AuthorizeDbContext dbContext;
-
 		protected override void Seed(AuthorizeDbContext context)
         {
-			dbContext = context;
-			_SeedCustomers();
-			_SaveChanges();
+			_SeedCustomers(context);
+            _SeedAuthorizeConfig(context);
         }
 
-		private void _SeedCustomers()
+		private void _SeedCustomers(AuthorizeDbContext context)
 		{
-			if (dbContext.Customers.Any()) return;
+			if (context.Customers.Any()) return;
 
 			string newCardNumber = "4929399657543118";
 			string lastFourDigits = newCardNumber.Substring(newCardNumber.Length - 4);
@@ -60,20 +56,26 @@ namespace AuthorizeNetSample.DAL.Migrations
 				Country = "United States",
 			};
 
-			customer.Addresses.Add(address as BillingAddress);
-			customer.CreditCards.Add(card);
             card.BillingAddress = address;
+            customer.Addresses.Add(address);
+			customer.CreditCards.Add(card);
 
-			dbContext.Customers.Add(customer);
-            dbContext.CreditCards.Add(card);
-            dbContext.BillingAddresses.Add(address);
-
-			saveChanges = true;
+			context.Customers.Add(customer);
+            context.SaveChanges();
 		}
 
-		private void _SaveChanges()
-		{
-			if (saveChanges) dbContext.SaveChanges();
-		}
-	}
+        private void _SeedAuthorizeConfig(AuthorizeDbContext context) {
+            if (context.AuthorizeConfig.Any()) return;
+
+            AuthorizeConfig config = new AuthorizeConfig {
+                Id = Guid.NewGuid(),
+                ClientId = "4dp5b7gRqk",
+                ClientSecret = "fa3a5b16753d09b24bb44243605a4a98",
+                RedirectUri = "https://developer.authorize.net/api/reference/index.html"
+            };
+
+            context.AuthorizeConfig.Add(config);
+            context.SaveChanges();
+        }
+    }
 }

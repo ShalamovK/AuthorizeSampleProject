@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\AuthorizeConfigRepository.cs" />
+    <Compile Include="Config\IAuthorizeConfigRepository.cs" />
+    <Compile Include="Extensions\RepositoryExtensions.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />

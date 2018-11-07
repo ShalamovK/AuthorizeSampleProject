@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Main", "AuthorizeNetSample\AuthorizeNetSample.Main.csproj", "{A6352B41-2369-4637-8C59-3F31D9A69654}"
-	ProjectSection(ProjectDependencies) = postProject
-		{50A58F9F-DA62-4790-9659-7D69215BE6DA} = {50A58F9F-DA62-4790-9659-7D69215BE6DA}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.PaymentSystem", "AuthorizeNetSample.PaymentSystem\AuthorizeNetSample.PaymentSystem.csproj", "{0AF185A8-8487-411B-9A76-1135BFB9AD92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Common", "AuthorizeNetSample.Common\AuthorizeNetSample.Common.csproj", "{50A58F9F-DA62-4790-9659-7D69215BE6DA}"
@@ -22,16 +17,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Reposito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbroideryOrderes.AuthorizePaymentSystem", "EmbroideryOrderes.AuthorizePaymentSystem\EmbroideryOrderes.AuthorizePaymentSystem.csproj", "{37E41BD1-DFFD-460C-9B37-9CBC08A1AC68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Web", "AuthorizeNetSample.Web\AuthorizeNetSample.Web.csproj", "{4689617D-F7CD-423B-AB9C-21FFD117D676}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeNetSample.Domain", "AuthorizeNetSample.Domain\AuthorizeNetSample.Domain.csproj", "{44793BB4-51B7-4963-BE86-F827CF396AD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A6352B41-2369-4637-8C59-3F31D9A69654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6352B41-2369-4637-8C59-3F31D9A69654}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6352B41-2369-4637-8C59-3F31D9A69654}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6352B41-2369-4637-8C59-3F31D9A69654}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AF185A8-8487-411B-9A76-1135BFB9AD92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AF185A8-8487-411B-9A76-1135BFB9AD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF185A8-8487-411B-9A76-1135BFB9AD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,6 +55,14 @@ Global
 		{37E41BD1-DFFD-460C-9B37-9CBC08A1AC68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37E41BD1-DFFD-460C-9B37-9CBC08A1AC68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37E41BD1-DFFD-460C-9B37-9CBC08A1AC68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4689617D-F7CD-423B-AB9C-21FFD117D676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4689617D-F7CD-423B-AB9C-21FFD117D676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4689617D-F7CD-423B-AB9C-21FFD117D676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4689617D-F7CD-423B-AB9C-21FFD117D676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44793BB4-51B7-4963-BE86-F827CF396AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44793BB4-51B7-4963-BE86-F827CF396AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44793BB4-51B7-4963-BE86-F827CF396AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44793BB4-51B7-4963-BE86-F827CF396AD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
