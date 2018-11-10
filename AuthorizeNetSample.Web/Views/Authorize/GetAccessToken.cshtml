@@ -1,0 +1,35 @@
+﻿@model AuthorizeNetSample.Web.Models.GetAccessTokenPageViewModel
+@{
+    ViewBag.Title = "Get Access Token";
+    AjaxOptions ajaxOptions = new AjaxOptions {
+        HttpMethod = "POST",
+        OnSuccess = "accessTokenRequestFinished(data)"
+    };
+}
+
+<div class="container">
+    <h2>Get Access Token</h2>
+    <hr />
+    @using (Ajax.BeginForm("GetAccessToken", "Authorize", ajaxOptions)) {
+        <div class="row">
+            <div class="form-group">
+                @Html.LabelFor(x => x.ClientId, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.ClientId, new { @class = "form-control", disabled = "disabled" })
+                @Html.HiddenFor(x => x.ClientId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.ClientSecret, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.ClientSecret, new { @class = "form-control", disabled = "disabled" })
+                @Html.HiddenFor(x => x.ClientSecret)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Code, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-success">Get Token</button>
+        </div>
+    }
+    <div class="row">
+        <div id="accessTokenResponse"></div>
+    </div>
+</div>

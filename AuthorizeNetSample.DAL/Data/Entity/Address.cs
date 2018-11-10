@@ -1,8 +1,9 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity.Base;
+using System;
 
 namespace AuthorizeNetSample.DAL.Data.Entity
 {
-	public class Address : BaseEntity<int>
+	public class Address : BaseEntity<Guid>
 	{
 		public string Street { get; set; }
 		public string City { get; set; }
@@ -12,7 +13,9 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		public string Phone { get; set; }
 
 		//Navigation
-		public int CustomerId { get; set; }
+		public Guid? CustomerId { get; set; }
 		public virtual Customer Customer { get; set; }
-	}
+        public Guid? CreditCardId { get; set; }
+        public virtual CreditCard CreditCard { get; set; }
+    }
 }

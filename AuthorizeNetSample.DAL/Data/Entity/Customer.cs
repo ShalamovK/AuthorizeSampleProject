@@ -1,10 +1,11 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuthorizeNetSample.DAL.Data.Entity
 {
-	public class Customer : BaseEntity<int>
+	public class Customer : BaseEntity<Guid>
 	{
 		public Customer()
 		{

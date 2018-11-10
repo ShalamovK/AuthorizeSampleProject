@@ -77,12 +77,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EmbroideryOrderes.Repositories\EmbroideryOrderes.Repositories.csproj">
-      <Project>{0a6c8761-edd4-4a03-a44f-e1362ce2677d}</Project>
-      <Name>EmbroideryOrderes.Repositories</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

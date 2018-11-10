@@ -1,5 +1,4 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AuthorizeNetSample.DAL.Data.Maps
@@ -8,7 +7,7 @@ namespace AuthorizeNetSample.DAL.Data.Maps
 	{
 		public AddressMap()
 		{
-			Property(a => a.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(a => a.Id);
 			Property(a => a.Street).IsRequired();
 			Property(a => a.ZIP).HasMaxLength(6).IsRequired();
 		}

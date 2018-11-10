@@ -1,9 +1,11 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity.Base;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuthorizeNetSample.DAL.Data.Entity
 {
-	public class CreditCard : BaseEntity<int>
+	public class CreditCard : BaseEntity<Guid>
 	{
 		[Required]
 		public string LastFourDigits { get; set; }
@@ -17,8 +19,8 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		public string ExpDate { get; set; }
 
 		//Navigation
-		public int CustomerId { get; set; }
+		public Guid CustomerId { get; set; }
 		public virtual Customer Customer { get; set; }
-		public virtual BillingAddress BillingAddress { get; set; }
+        public virtual ICollection<Address> BillingAddresses { get; set; }
 	}
 }

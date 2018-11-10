@@ -1,4 +1,5 @@
 ﻿using AuthorizeNetSample.BLL.Maps;
+using AuthorizeNetSample.Web.App_Start;
 using AutoMapper;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -13,6 +14,7 @@ namespace AuthorizeNetSample.Web {
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Mapper.Initialize(cfg => {
                 cfg.AddProfile(new ServiceMapping());
+                cfg.AddProfile(new AutomapperConfig());
             });
             Mapper.AssertConfigurationIsValid();
         }

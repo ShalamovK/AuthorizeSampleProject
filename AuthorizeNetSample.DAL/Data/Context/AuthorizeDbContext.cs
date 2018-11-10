@@ -14,7 +14,6 @@ namespace AuthorizeNetSample.DAL.Data.Context {
 		public DbSet<Payment> Payments { get; set; }
 		public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<BillingAddress> BillingAddresses { get; set; }
         public DbSet<AuthorizeConfig> AuthorizeConfig { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -22,7 +21,6 @@ namespace AuthorizeNetSample.DAL.Data.Context {
 			modelBuilder.Configurations.Add(new AddressMap());
 			modelBuilder.Configurations.Add(new CreditCardMap());
 			modelBuilder.Configurations.Add(new CustomerMap());
-            modelBuilder.Configurations.Add(new BillingAddressMap());
             modelBuilder.Configurations.Add(new AuthorizeConfigMap());
         }
     }

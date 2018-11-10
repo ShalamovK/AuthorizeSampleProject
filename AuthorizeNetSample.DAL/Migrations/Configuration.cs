@@ -4,6 +4,7 @@ namespace AuthorizeNetSample.DAL.Migrations
 	using AuthorizeNetSample.DAL.Data.Entity;
 	using AuthorizeNetSample.DAL.Data.Protection;
 	using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
 	using System.Linq;
@@ -30,39 +31,38 @@ namespace AuthorizeNetSample.DAL.Migrations
 			string lastFourDigits = newCardNumber.Substring(newCardNumber.Length - 4);
 			string cardNumHash = DataEncryptor.Encrypt(newCardNumber);
 
-            Customer customer = new Customer
-            {
+            Address address = new Address {
+                Id = Guid.NewGuid(),
+                Street = "12th Jason ave",
+                City = "Orange park",
+                State = "FL",
+                Phone = "23094587",
+                ZIP = "33312",
+                Country = "United States",
+            };
+
+            CreditCard card = new CreditCard {
+                Id = Guid.NewGuid(),
+                LastFourDigits = lastFourDigits,
+                CardNumHash = cardNumHash,
+                BillingAddresses = new List<Address> { address },
+                ExpDate = "0822",
+                FirstName = "John",
+                LastName = "Doe",
+            };
+
+            Customer customer = new Customer {
+                Id = Guid.NewGuid(),
                 FirstName = "John",
                 LastName = "Doe",
                 DateAdded = DateTime.Now,
+                CreditCards = new List<CreditCard> { card },
+                Addresses = new List<Address> { address }
             };
 
-            CreditCard card = new CreditCard
-			{
-				LastFourDigits = lastFourDigits,
-				CardNumHash = cardNumHash,
-				ExpDate = "0822",
-				FirstName = "John",
-				LastName = "Doe",
-			};
-
-			BillingAddress address = new BillingAddress 
-            {
-				Street = "12th Jason ave",
-				City = "Orange park",
-				State = "FL",
-				Phone = "23094587",
-				ZIP = "33312",
-				Country = "United States",
-			};
-
-            card.BillingAddress = address;
-            customer.Addresses.Add(address);
-			customer.CreditCards.Add(card);
-
-			context.Customers.Add(customer);
+            context.Customers.Add(customer);
             context.SaveChanges();
-		}
+        }
 
         private void _SeedAuthorizeConfig(AuthorizeDbContext context) {
             if (context.AuthorizeConfig.Any()) return;

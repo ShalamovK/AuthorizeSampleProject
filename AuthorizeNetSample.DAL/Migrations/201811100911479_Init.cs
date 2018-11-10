@@ -8,50 +8,50 @@ namespace AuthorizeNetSample.DAL.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.CreditCards",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        LastFourDigits = c.String(nullable: false, maxLength: 4),
-                        FirstName = c.String(nullable: false),
-                        LastName = c.String(nullable: false),
-                        CardNumHash = c.String(nullable: false),
-                        ExpDate = c.String(nullable: false, maxLength: 4),
-                        CustomerId = c.Int(nullable: false),
-                        DateAdded = c.DateTime(),
-                        LastModified = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
-                .Index(t => t.CustomerId);
-            
-            CreateTable(
                 "dbo.Addresses",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false),
                         Street = c.String(nullable: false),
                         City = c.String(),
                         State = c.String(),
                         ZIP = c.String(nullable: false, maxLength: 6),
                         Country = c.String(),
                         Phone = c.String(),
-                        CustomerId = c.Int(nullable: false),
+                        CustomerId = c.Guid(),
+                        CreditCardId = c.Guid(),
                         DateAdded = c.DateTime(),
                         LastModified = c.DateTime(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CreditCards", t => t.CreditCardId)
+                .ForeignKey("dbo.Customers", t => t.CustomerId)
+                .Index(t => t.CustomerId)
+                .Index(t => t.CreditCardId);
+            
+            CreateTable(
+                "dbo.CreditCards",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        LastFourDigits = c.String(nullable: false, maxLength: 4),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
+                        CardNumHash = c.String(nullable: false),
+                        ExpDate = c.String(nullable: false, maxLength: 4),
+                        CustomerId = c.Guid(nullable: false),
+                        DateAdded = c.DateTime(),
+                        LastModified = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
-                .ForeignKey("dbo.CreditCards", t => t.Id)
-                .Index(t => t.Id)
                 .Index(t => t.CustomerId);
             
             CreateTable(
                 "dbo.Customers",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false),
                         FirstName = c.String(nullable: false),
                         LastName = c.String(nullable: false),
                         DateAdded = c.DateTime(),
@@ -63,11 +63,11 @@ namespace AuthorizeNetSample.DAL.Migrations
                 "dbo.Payments",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false),
                         TransactionId = c.String(),
                         AuthKey = c.String(),
                         Amount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        CustomerId = c.Int(nullable: false),
+                        CustomerId = c.Guid(nullable: false),
                         DateAdded = c.DateTime(),
                         LastModified = c.DateTime(),
                     })
@@ -75,22 +75,38 @@ namespace AuthorizeNetSample.DAL.Migrations
                 .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
                 .Index(t => t.CustomerId);
             
+            CreateTable(
+                "dbo.AuthorizeConfigs",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ClientId = c.String(),
+                        ClientSecret = c.String(),
+                        AccessToken = c.String(),
+                        RefreshToken = c.String(),
+                        RedirectUri = c.String(),
+                        AccesssTokenExpiresIn = c.DateTime(),
+                        RefreshTokenExpiresIn = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.CreditCards", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.Addresses", "Id", "dbo.CreditCards");
             DropForeignKey("dbo.Payments", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.Addresses", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.Addresses", "CreditCardId", "dbo.CreditCards");
             DropIndex("dbo.Payments", new[] { "CustomerId" });
-            DropIndex("dbo.Addresses", new[] { "CustomerId" });
-            DropIndex("dbo.Addresses", new[] { "Id" });
             DropIndex("dbo.CreditCards", new[] { "CustomerId" });
+            DropIndex("dbo.Addresses", new[] { "CreditCardId" });
+            DropIndex("dbo.Addresses", new[] { "CustomerId" });
+            DropTable("dbo.AuthorizeConfigs");
             DropTable("dbo.Payments");
             DropTable("dbo.Customers");
-            DropTable("dbo.Addresses");
             DropTable("dbo.CreditCards");
+            DropTable("dbo.Addresses");
         }
     }
 }

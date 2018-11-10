@@ -1,61 +1,68 @@
-﻿using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
-using System;
+﻿using AuthorizeNetSample.Domain.Interfaces.Services;
+using AuthorizeNetSample.Domain.Interfaces.Services.Base;
+using AuthorizeNetSample.Domain.Models.Dtos;
+using AuthorizeNetSample.Web.Controllers.Base;
+using AuthorizeNetSample.Web.Models;
+using AuthorizeNetSample.Web.Models.Authorize;
+using AutoMapper;
 using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace AuthorizeNetSample.Web.Controllers {
-    public class AuthorizeController : Controller
+    public class AuthorizeController : BaseController
     {
+        public AuthorizeController(IServiceHost serviceHost)
+            : base(serviceHost) { }
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public RedirectResult RequestToken() {
-            string returnUrl = "https://localhost:17126/Authorize";
-            //string OAuthUrl = WebConfigurationManager.AppSettings["AuthorizeRequestTokenEndpoint"];
-            //string clientId = WebConfigurationManager.AppSettings["AuthorizeOAuthClientId"];
-            string OAuthUrl = "https://sandbox.authorize.net/oauth/authorize";
-            string clientId = "4dp5b7gRqk";
-            //IOAuthSession session = CreateSession();
+        [HttpGet]
+        public ActionResult GetRequestToken() {
+            AuthorizeConfigDto authorizeConfig = _serviceHost.GetService<IAuthorizeService>().GetConfig();
+            if (authorizeConfig == null) return null;
 
-            //if (session == null)
-            //    return Redirect(returnUrl);
+            OauthClient client = _CreateAuthorizeOauthClient(authorizeConfig);
+            if (client == null) return Redirect(nameof(Index));
 
-            //IToken requestToken;
+            GetRequestTokenPageViewModel model = Mapper.Map<GetRequestTokenPageViewModel>(authorizeConfig);
+            model.OAuthUrl = client.OauthUrl();
+            model.Scope = client.GetScope();
+            model.State = client.GetState();
+            model.Sub = client.GetSub();
 
-            //try {
-            //    requestToken = session.GetRequestToken();
-            //} catch (Exception e) {
-            //    return Redirect(returnUrl);
-            //}
-
-            //Session["RequestToken"] = requestToken;
-            //Session["Token"] = requestToken.Token;
-            //Session["TokenSecret"] = requestToken.TokenSecret;
-            //var authUrl = $"{QbSettings.AuthUrl}?oauth_token={requestToken.Token}" +
-            //              $"&oauth_callback={UriUtility.UrlEncode(urlHelper.Action("GetAccessToken", "QuickBooks", null, "https"))}";
-            //Session["UrlBack"] = returnUrl;
-            //return Redirect(authUrl);
-            OAuthUrl = OAuthUrl + $"?sub=oauth&client_id={clientId}&state=1&scope=read,write&redirect_uri={returnUrl}";
-            return Redirect(OAuthUrl);
+            return View(model);
         }
 
-        private IOAuthSession CreateSession() {
-            string OAuthConsumerKey = WebConfigurationManager.AppSettings["AuthorizeApiLoginId"];
-            string OAuthConsumerSecret = WebConfigurationManager.AppSettings["AuthorizeTransactionKey"];
-            string ServiceProvider = WebConfigurationManager.AppSettings["AuthorizeRequestTokenEndpoint"];
-            string OAuthLink = WebConfigurationManager.AppSettings["AuthorizeOauth"];
-            string AccessToken = WebConfigurationManager.AppSettings["AuthorizeAccessTokenEndpoint"];
+        [HttpPost]
+        public RedirectResult GetRequestToken(GetRequestTokenPageViewModel model) {
+            //string clientId = "4dp5b7gRqk";
+            
+            return Redirect(model.OAuthUrl);
+        }
 
-            OAuthConsumerContext consumerContext = new OAuthConsumerContext {
-                ConsumerKey = OAuthConsumerKey,
-                ConsumerSecret = OAuthConsumerSecret,
-                SignatureMethod = SignatureMethod.HmacSha1
+        [HttpGet]
+        public ActionResult GetAccessToken(string clientId, string clientSecret) {
+            GetAccessTokenPageViewModel model = new GetAccessTokenPageViewModel {
+                ClientId = clientId,
+                ClientSecret = clientSecret
             };
 
-            return new OAuthSession(consumerContext, ServiceProvider, OAuthLink, AccessToken);
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult GetAccessToken(GetAccessTokenPageViewModel model) {
+            return Json("");
+        }
+
+        private OauthClient _CreateAuthorizeOauthClient(AuthorizeConfigDto authorizeConfig) {
+            string requestTokenUrl = WebConfigurationManager.AppSettings["AuthorizeRequestTokenUrl"];
+
+            OauthClient client = new OauthClient(requestTokenUrl, authorizeConfig.ClientId, authorizeConfig.RedirectUri, "test1023");
+            return client;
         }
     }
 }

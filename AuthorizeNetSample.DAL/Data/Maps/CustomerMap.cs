@@ -1,5 +1,4 @@
 ﻿using AuthorizeNetSample.DAL.Data.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AuthorizeNetSample.DAL.Data.Maps
@@ -8,9 +7,10 @@ namespace AuthorizeNetSample.DAL.Data.Maps
 	{
 		public CustomerMap()
 		{
-			Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            HasKey(c => c.Id);
 			Property(c => c.FirstName).IsRequired();
 			Property(c => c.LastName).IsRequired();
+            HasMany(c => c.Addresses).WithOptional(a => a.Customer);
 		}
 	}
 }

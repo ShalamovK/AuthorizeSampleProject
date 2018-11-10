@@ -2,4 +2,10 @@
     ViewBag.Title = "Index";
 }
 
-@Html.ActionLink("Connect", "RequestToken", null, new { @class = "btn btn-primary btn-lg" })
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ActionLink("Set Up Connection", "GetRequestToken", null, new { @class = "btn btn-primary btn-lg" })
+        </div>
+    </div>
+</div>

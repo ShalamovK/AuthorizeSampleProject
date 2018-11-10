@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Services\Base\IService.cs" />
+    <Compile Include="Interfaces\Services\Base\IServiceHost.cs" />
     <Compile Include="Interfaces\Services\IAuthorizeService.cs" />
     <Compile Include="Models\Dtos\AuthorizeConfigDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

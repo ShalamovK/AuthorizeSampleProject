@@ -13,7 +13,7 @@ namespace AuthorizeNetSample.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201810021452454_Init"; }
+            get { return "201811100911479_Init"; }
         }
         
         string IMigrationMetadata.Source
