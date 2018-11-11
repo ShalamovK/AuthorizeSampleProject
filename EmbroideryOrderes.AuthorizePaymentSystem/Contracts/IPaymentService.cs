@@ -10,6 +10,7 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Contracts {
     /// </summary>
     public interface IPaymentService {
         ANetResponse<PaymentResponse> MakePayment(CreditCardPayment model, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
+        ANetResponse<PaymentResponse> MakePayment(CreditCardPayment model, string accessToken, AuthorizeEnviromentsEnum enviroment);
         ANetResponse<PaymentResponse> MakePaymentByProfile(ProfilePayment payment, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
         ANetResponse<PaymentResponse> RefundCreditCard(ANetRefundModel model, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
         List<ANetPaymentCharge> GetUnsettledPayments(string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);

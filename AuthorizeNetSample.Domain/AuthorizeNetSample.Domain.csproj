@@ -41,11 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\MerchantAuthenticationType.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Interfaces\Services\Base\IService.cs" />
     <Compile Include="Interfaces\Services\Base\IServiceHost.cs" />
     <Compile Include="Interfaces\Services\IAuthorizeService.cs" />
+    <Compile Include="Interfaces\Services\ICustomerService.cs" />
+    <Compile Include="Models\Authorize\AuthorizePaymentResponse.cs" />
+    <Compile Include="Models\Authorize\ChargeCustomerDto.cs" />
+    <Compile Include="Models\Dtos\AddressDto.cs" />
     <Compile Include="Models\Dtos\AuthorizeConfigDto.cs" />
+    <Compile Include="Models\Dtos\Base\BaseEntityDto.cs" />
+    <Compile Include="Models\Dtos\CreditCardDto.cs" />
+    <Compile Include="Models\Dtos\CustomerDto.cs" />
+    <Compile Include="Models\Dtos\PaymentDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

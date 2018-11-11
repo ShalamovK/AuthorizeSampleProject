@@ -1,0 +1,34 @@
+﻿@model AuthorizeNetSample.Web.Models.Authorize.AccessTokenResponse
+
+<h2>Access Token Response</h2>
+<hr />
+<div class="row">
+    <div class="form-group">
+        @Html.LabelFor(x => x.AccessToken, new { @class = "control-label" })
+        @Html.TextAreaFor(x => x.AccessToken, new { @class = "form-control", disabled = "disabled", rows = 8 })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.RefreshToken, new { @class = "control-label" })
+        @Html.TextAreaFor(x => x.RefreshToken, new { @class = "form-control", disabled = "disabled", rows = 8 })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ExpiresIn, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ExpiresIn, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.RefreshTokenExpiresIn, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.RefreshTokenExpiresIn, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.TokenType, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.TokenType, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Scope, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.Scope, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ClientStatus, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ClientStatus, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>

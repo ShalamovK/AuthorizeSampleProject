@@ -15,7 +15,7 @@
         @if (!String.IsNullOrEmpty(Model.RefreshToken)) {
             <div class="form-group">
                 @Html.LabelFor(x => x.RefreshToken, new { @class = "control-label" })
-                @Html.TextBoxFor(x => x.RefreshToken, new { @class = "form-control", disabled = "disabled" })
+                @Html.TextAreaFor(x => x.RefreshToken, new { @class = "form-control", disabled = "disabled", rows = 8 })
             </div>
         }
         <div class="form-group">
@@ -41,16 +41,32 @@
         </div>
         <button id="getRequestToken" class="btn btn-success" data-oauth-url="@Model.OAuthUrl">Get Request Token</button>
         @if (!String.IsNullOrEmpty(Model.RefreshToken)) {
-            @Html.ActionLink("Update AccessToken", "GetAccessToken", "Authorize", new { clientId = Model.ClientId, clientSecret = Model.ClientSecret, refreshToken = Model.RefreshToken }, new { @class = "btn btn-default" })
+            <button id="refreshTokenButton" class="btn btn-default">Refresh Access Token</button>
         }
         @Html.ActionLink("Next To Access Token", "GetAccessToken", "Authorize", new { clientId = Model.ClientId, clientSecret = Model.ClientSecret }, new { @class = "btn btn-primary next-action" })
     </div>
+    <div id="refreshTokenResults"></div>
 </div>
 
 @section scripts {
     <script>
+        var refreshAccessTokenUrl = "@Url.Action("RefreshAccessToken", "Authorize")/"
+
         $("#getRequestToken").click(function() {
             window.open($(this).data("oauth-url"));
+        });
+
+        $("#refreshTokenButton").click(function() {
+            $.ajax({
+                url: refreshAccessTokenUrl,
+                type: "GET",
+                success: function(data) {
+                    $("#refreshTokenResults").html(data);
+                },
+                error: function() {
+                    showNotify("Connection error", "danger");
+                }
+            });
         });
     </script>
 }

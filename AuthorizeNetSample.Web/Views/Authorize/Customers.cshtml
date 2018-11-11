@@ -1,0 +1,40 @@
+﻿@model List<AuthorizeNetSample.Web.Models.CustomerViewModel>
+@{
+    ViewBag.Title = "Customers";
+}
+
+<div class="container">
+    <h2>Customers</h2>
+    <hr />
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any()) {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                } else {
+                    foreach (var customer in Model) {
+                        <tr>
+                            <td>@customer.FirstName</td>
+                            <td>@customer.LastName</td>
+                            <td>
+                                @Html.ActionLink("Charge Customer", "ChargeCustomer", "Authorize", new { customerId = customer.Id }, new { @class = "btn btn-success", style = "float: right" })
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

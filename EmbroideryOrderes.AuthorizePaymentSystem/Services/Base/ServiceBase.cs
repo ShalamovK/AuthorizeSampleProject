@@ -24,5 +24,22 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services.Base {
                 Item = transactionKey
             };
         }
+
+        protected void Init(AuthorizeEnviromentsEnum enviroment, string accessToken) {
+            //Setup conection
+            switch (enviroment) {
+                case AuthorizeEnviromentsEnum.Sandbox:
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+                    break;
+                case AuthorizeEnviromentsEnum.Production:
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.PRODUCTION;
+                    break;
+            }
+
+            ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType() {
+                ItemElementName = ItemChoiceType.accessToken,
+                Item = accessToken
+            };
+        }
     }
 }

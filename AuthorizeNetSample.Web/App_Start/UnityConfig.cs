@@ -4,6 +4,8 @@ using AuthorizeNetSample.Domain.Interfaces.Services;
 using AuthorizeNetSample.Domain.Interfaces.Services.Base;
 using AuthorizeNetSample.Repositories;
 using AuthorizeNetSample.Web.Ioc;
+using EmbroideryOrderes.AuthorizePaymentSystem.Contracts;
+using EmbroideryOrderes.AuthorizePaymentSystem.Services;
 using System.Configuration;
 using System.Web.Http;
 using Unity;
@@ -36,6 +38,8 @@ namespace AuthorizeNetSample.Web {
             // BLL
             container.RegisterType<IServiceHost, ServiceHost>(new PerRequestOrTransientLifeTimeManager(), new InjectionConstructor(container));
             container.RegisterType<IAuthorizeService, AuthorizeService>();
+            container.RegisterType<IPaymentService, PaymentService>();
+            container.RegisterType<ICustomerService, CustomerService>();
 
             return container;
         }

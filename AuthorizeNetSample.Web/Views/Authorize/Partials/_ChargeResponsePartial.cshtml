@@ -1,0 +1,18 @@
+﻿@model AuthorizeNetSample.Web.Models.PaymentViewModel
+
+<h2>Charge Credit Card Response</h2>
+<hr />
+<div class="row">
+    <div class="form-group">
+        @Html.LabelFor(x => x.Amount, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.Amount, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.TransactionId, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.TransactionId, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.AuthKey, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.AuthKey, new { @class = "form-control", disabled = "disabled" })
+    </div>
+</div>

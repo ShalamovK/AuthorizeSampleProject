@@ -211,11 +211,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DropdownHelper.cs" />
     <Compile Include="Ioc\PerRequestOrTransientLifeTimeManager.cs" />
     <Compile Include="Ioc\UnityResolver.cs" />
+    <Compile Include="Models\AddressViewModel.cs" />
+    <Compile Include="Models\Authorize\AccessTokenResponse.cs" />
     <Compile Include="Models\Authorize\OauthClient.cs" />
+    <Compile Include="Models\Base\BaseEntityViewModel.cs" />
+    <Compile Include="Models\ChargeCustomerViewModel.cs" />
+    <Compile Include="Models\CreditCardViewModel.cs" />
+    <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\GetAccessTokenPageViewModel.cs" />
     <Compile Include="Models\GetRequestTokenPageViewModel.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +254,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -268,6 +278,10 @@
     <Content Include="Views\Authorize\Index.cshtml" />
     <Content Include="Views\Authorize\GetRequestToken.cshtml" />
     <Content Include="Views\Authorize\GetAccessToken.cshtml" />
+    <Content Include="Views\Authorize\Partials\_AccessTokenResponsePartial.cshtml" />
+    <Content Include="Views\Authorize\Customers.cshtml" />
+    <Content Include="Views\Authorize\ChargeCustomer.cshtml" />
+    <Content Include="Views\Authorize\Partials\_ChargeResponsePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

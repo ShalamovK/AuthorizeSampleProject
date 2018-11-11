@@ -69,15 +69,7 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
             return response;
         }
 
-        #endregion
-        #region [ Payment Methods]
-
-        public ANetResponse<PaymentResponse> MakePayment(CreditCardPayment model, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
-            string loggerMessage = $"Credit card payment. Customer: {model.BillAddress.FirstName} {model.BillAddress.LastName} Result: "; //Init base logger message
-            ANetResponse<PaymentResponse> response = new ANetResponse<PaymentResponse> { IsSuccessful = false, Message = "" };
-
-            Init(enviroment, appLoginId, transactionKey);
-
+        private ANetResponse<PaymentResponse> _ProcessPaymentHelper(CreditCardPayment model, ANetResponse<PaymentResponse> response, string loggerMessage) {
             creditCardType creditCard = new creditCardType {
                 cardNumber = model.Card.Number,
                 expirationDate = model.Card.ExpirationDate
@@ -110,7 +102,7 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
             var paymentType = new paymentType { Item = creditCard };
 
             var transactionRequest = new transactionRequestType {
-                transactionType = transactionTypeEnum.authCaptureTransaction.ToString(), 
+                transactionType = transactionTypeEnum.authCaptureTransaction.ToString(),
 
                 amount = model.Amount,
                 payment = paymentType,
@@ -134,7 +126,28 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
             return _ProcessPaymentResponse(response, apiResponse, loggerMessage);
         }
 
-        public ANetResponse<PaymentResponse> MakePaymentByProfile(ProfilePayment payment, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
+        #endregion
+        #region [ Payment Methods]
+
+        public ANetResponse<PaymentResponse> MakePayment(CreditCardPayment model, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
+            string loggerMessage = $"Credit card payment. Customer: {model.BillAddress.FirstName} {model.BillAddress.LastName} Result: "; //Init base logger message
+            ANetResponse<PaymentResponse> response = new ANetResponse<PaymentResponse> { IsSuccessful = false, Message = "" };
+
+            Init(enviroment, appLoginId, transactionKey);
+
+            return _ProcessPaymentHelper(model, response, loggerMessage);
+        }
+
+        public ANetResponse<PaymentResponse> MakePayment(CreditCardPayment model, string accessToken, AuthorizeEnviromentsEnum enviroment) {
+            string loggerMessage = $"Credit card payment. Customer: {model.BillAddress.FirstName} {model.BillAddress.LastName} Result: "; //Init base logger message
+            ANetResponse<PaymentResponse> response = new ANetResponse<PaymentResponse> { IsSuccessful = false, Message = "" };
+
+            Init(enviroment, accessToken);
+
+            return _ProcessPaymentHelper(model, response, loggerMessage);
+        }
+
+            public ANetResponse<PaymentResponse> MakePaymentByProfile(ProfilePayment payment, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
             string loggerMessage = $"Profile based payment. Customer profile Id: {payment.CustomerProfileModel.Id} Result: "; //Init base logger message
             ANetResponse<PaymentResponse> response = new ANetResponse<PaymentResponse> { IsSuccessful = false, Message = "" };
 

@@ -1,4 +1,5 @@
-﻿using AuthorizeNetSample.Domain.Models.Dtos;
+﻿using AuthorizeNetSample.Domain.Models.Authorize;
+using AuthorizeNetSample.Domain.Models.Dtos;
 using AuthorizeNetSample.Web.Models;
 using AutoMapper;
 
@@ -10,6 +11,12 @@ namespace AuthorizeNetSample.Web.App_Start {
                 ForMember(trg => trg.Scope, opt => opt.Ignore()).
                 ForMember(trg => trg.State, opt => opt.Ignore()).
                 ForMember(trg => trg.Sub, opt => opt.Ignore());
+            CreateMap<ChargeCustomerViewModel, ChargeCustomerDto>().
+                ForMember(trg => trg.CustomerId, opt => opt.MapFrom(src => src.Customer.Id));
+            CreateMap<CustomerDto, CustomerViewModel>().ReverseMap();
+            CreateMap<CreditCardDto, CreditCardViewModel>().ReverseMap();
+            CreateMap<AddressDto, AddressViewModel>().ReverseMap();
+            CreateMap<PaymentDto, PaymentViewModel>().ReverseMap();
         }
     }
 }

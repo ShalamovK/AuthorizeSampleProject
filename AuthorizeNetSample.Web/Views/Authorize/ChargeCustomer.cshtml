@@ -1,0 +1,52 @@
+﻿@using AuthorizeNetSample.Web.Helpers
+@model AuthorizeNetSample.Web.Models.ChargeCustomerViewModel
+@{
+    ViewBag.Title = "ChargeCustomer";
+    AjaxOptions ajaxOptions = new AjaxOptions {
+        HttpMethod = "POST",
+        OnSuccess = "chargeResult(data)"
+    };
+}
+
+<div class="container">
+    <h2>Charge Customer</h2>
+    <hr />
+    @using (Ajax.BeginForm("ChargeCustomer", "Authorize", ajaxOptions)) {
+        <div class="row">
+            @Html.HiddenFor(x => x.Customer.Id)
+            @Html.HiddenFor(x => x.CreditCardId)
+            <div class="form-group">
+                @Html.LabelFor(x => x.Customer.FirstName, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.Customer.FirstName, new { @class = "form-control", disabled = "disabled" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Customer.LastName, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.Customer.LastName, new { @class = "form-control", disabled = "disabled" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Amount, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.Amount, new { @class = "form-control", type = "number", step = 0.1, min = 0 })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.PaymentNote, new { @class = "control-label" })
+                @Html.TextBoxFor(x => x.PaymentNote, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.AuthenticationType, new { @class = "control-label" })
+                @Html.DropDownListFor(x => x.AuthenticationType, DropdownHelper.GetMerchantAuthenticationTypes(), new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-success">Charge</button>
+        </div>
+    }
+    <div id="chargeResponse"></div>
+</div>
+
+@section scripts {
+    <script>
+        function chargeResult(data) {
+            $("#chargeResponse").html(data);
+        }
+    </script>
+}

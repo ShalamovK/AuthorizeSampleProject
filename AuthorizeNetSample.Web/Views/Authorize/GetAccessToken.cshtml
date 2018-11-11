@@ -29,7 +29,13 @@
             <button type="submit" class="btn btn-success">Get Token</button>
         </div>
     }
-    <div class="row">
-        <div id="accessTokenResponse"></div>
-    </div>
+    <div id="accessTokenResponse"></div>
 </div>
+
+@section scripts {
+<script>
+    function accessTokenRequestFinished(data) {
+        $("#accessTokenResponse").html(data);
+    }
+</script>
+}
