@@ -1,0 +1,26 @@
+﻿@model AuthorizeNetSample.Web.Models.Authorize.CustomerAccountResponseViewModel
+
+<h2>Create Customer Profile Response</h2>
+<hr />
+<div class="row">
+    <div class="form-group">
+        @Html.LabelFor(x => x.CustomerId, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.CustomerId, new { @class = "form-control", disabled = "disabled" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.PaymentProfiles, new { @class = "control-label" })
+        @if (Model.PaymentProfiles != null) {
+            for (int i = 0; i < Model.PaymentProfiles.Count; i++) {
+                @Html.TextBoxFor(x => x.PaymentProfiles[i], new { @class = "form-control", disabled = "disabled" })
+            }
+        }
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingProfiles, new { @class = "control-label" })
+        @if (Model.ShippingProfiles != null) {
+            for (int i = 0; i < Model.ShippingProfiles.Count; i++) {
+                @Html.TextBoxFor(x => x.ShippingProfiles[i], new { @class = "form-control", disabled = "disabled" })
+            }
+        }
+    </div>
+</div>

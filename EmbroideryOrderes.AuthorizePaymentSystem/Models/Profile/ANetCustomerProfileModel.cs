@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EmbroideryOrderes.AuthorizePaymentSystem.Models.Payment;
+using System.Collections.Generic;
 
 namespace EmbroideryOrderes.AuthorizePaymentSystem.Models.Profile {
     /// <summary>
@@ -13,9 +14,11 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Models.Profile {
         public string Email { get; set; }
         public string Id { get; set; }
         public List<PaymentProfileModel> PaymentProfiles { get; set; }
+        public List<ANetAddressModel> Shippings { get; set; }
 
         public ANetCustomerProfileModel() {
             PaymentProfiles = new List<PaymentProfileModel>();
+            Shippings = new List<ANetAddressModel>();
         }
     }
 }

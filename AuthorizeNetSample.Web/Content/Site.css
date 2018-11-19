@@ -40,3 +40,25 @@ textarea {
     font-family: FontAwesome;
     margin-left: 5px;
 }
+
+.presentation-background {
+    background-color: antiquewhite;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    overflow: auto;
+}
+
+.full-size {
+    height: 100% !important;
+}
+
+.presentation-page {
+    background-color: white;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+}

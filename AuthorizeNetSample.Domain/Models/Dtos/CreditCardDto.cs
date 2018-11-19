@@ -9,6 +9,7 @@ namespace AuthorizeNetSample.Domain.Models.Dtos {
         public string LastName { get; set; }
         public string CardNumHash { get; set; }
         public string ExpDate { get; set; }
+        public string AuthorizeId { get; set; }
         public Guid CustomerId { get; set; }
         public CustomerDto Customer { get; set; }
         public List<AddressDto> BillingAddresses { get; set; }

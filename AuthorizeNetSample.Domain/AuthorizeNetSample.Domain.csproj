@@ -49,7 +49,11 @@
     <Compile Include="Interfaces\Services\ICustomerService.cs" />
     <Compile Include="Models\Authorize\AuthorizePaymentResponse.cs" />
     <Compile Include="Models\Authorize\ChargeCustomerDto.cs" />
+    <Compile Include="Models\Authorize\EncryptVisaCheckoutDataDto.cs" />
     <Compile Include="Models\Dtos\AddressDto.cs" />
+    <Compile Include="Models\Dtos\ANetCustomerProfileModelDto.cs" />
+    <Compile Include="Models\Dtos\CustomerAccountResponseDto.cs" />
+    <Compile Include="Models\Dtos\DecryptedVisaCheckoutDataDto.cs" />
     <Compile Include="Models\Dtos\AuthorizeConfigDto.cs" />
     <Compile Include="Models\Dtos\Base\BaseEntityDto.cs" />
     <Compile Include="Models\Dtos\CreditCardDto.cs" />

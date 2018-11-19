@@ -1,0 +1,99 @@
+﻿@model AuthorizeNetSample.Web.Models.Authorize.DecryptedVisaCheckoutDataViewModel
+
+<h2>Decrypted Visa Checkout Data</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <h4><b>Shipping Info</b></h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.Address, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.Address, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.City, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.City, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.State, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.State, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.Country, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.Country, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.Zip, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.Zip, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.FirstName, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.FirstName, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingInfo.LastName, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.ShippingInfo.LastName, new { @class = "form-control", disabled = "disabled" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4><b>Billing Info</b></h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.Address, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.Address, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.City, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.City, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.State, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.State, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.Country, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.Country, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.Zip, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.Zip, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.FirstName, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.FirstName, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.LastName, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.LastName, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.BillingInfo.Email, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.BillingInfo.Email, new { @class = "form-control", disabled = "disabled" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4><b>Card Info</b></h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(x => x.CardInfo.Number, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.CardInfo.Number, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.CardInfo.ExpDate, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.CardInfo.ExpDate, new { @class = "form-control", disabled = "disabled" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4><b>Payment Info</b></h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(x => x.PaymentDetails.Amount, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.PaymentDetails.Amount, new { @class = "form-control", disabled = "disabled" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.PaymentDetails.Currency, new { @class = "control-label" })
+            @Html.TextBoxFor(x => x.PaymentDetails.Currency, new { @class = "form-control", disabled = "disabled" })
+        </div>
+    </div>
+</div>
+

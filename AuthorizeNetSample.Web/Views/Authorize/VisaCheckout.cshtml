@@ -1,0 +1,120 @@
+﻿@model AuthorizeNetSample.Web.Models.Authorize.VisaCheckoutPaymentViewModel
+@{
+    ViewBag.Title = "Visa Checkout";
+}
+
+<div class="container">
+    <h2>Visa Checkout Payment</h2>
+    <hr />
+    <div class="row">
+        <div class="form-group">
+            <label class="control-label">Subtotal</label>
+            <input class="form-control" type="number" value="10.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Shipping Handling</label>
+            <input class="form-control" type="number" value="2.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Tax</label>
+            <input class="form-control" type="number" value="2.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Discount</label>
+            <input class="form-control" type="number" value="1.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Gift Wrap</label>
+            <input class="form-control" type="number" value="2.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Misc</label>
+            <input class="form-control" type="number" value="1.00" disabled="disabled" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Total</label>
+            <input class="form-control" type="number" value="16.00" disabled="disabled" />
+        </div>
+        <script type="text/javascript">
+            var decryptDataUrl = "@Url.Action("EncryptedVisaCheckoutData", "Authorize")";
+            var apiKey = "@Model.ApiKey";
+            function onVisaCheckoutReady() {
+                V.init({
+                    apikey: apiKey,
+                    sourceId: "Merchant Defined Source ID",
+                    settings: {
+                        locale: "en_US",
+                        countryCode: "US",
+                        displayName: "Test Corp",
+                        logoUrl: "www.Some_Image_URL.gif",
+                        websiteUrl: "www.TestCorp.com",
+                        customerSupportUrl: "www.TestCorp.support.com",
+                        shipping: {
+                            acceptedRegions: ["US", "CA"],
+                            collectShipping: "true"
+                        },
+                        payment: {
+                            cardBrands: [
+                                "VISA",
+                                "MASTERCARD"],
+                            acceptCanadianVisaDebit: "true"
+                        },
+                        review: {
+                            message: "Merchant defined message",
+                            buttonAction: "Continue"
+                        },
+                        dataLevel: "FULL"
+                    },
+                    paymentRequest: {
+                        merchantRequestId: "Merchant defined request ID",
+                        currencyCode: "USD",
+                        subtotal: "10.00",
+                        shippingHandling: "2.00",
+                        tax: "2.00",
+                        discount: "1.00",
+                        giftWrap: "2.00",
+                        misc: "1.00",
+                        total: "16.00",
+                        description: "Megacorp Product",
+                        orderId: "Merchant defined order ID",
+                        promoCode: "Merchant defined promo code",
+                        customData: {
+                            "nvPair": [
+                                { "name": "customName1", "value": "customValue1" },
+                                { "name": "customName2", "value": "customValue2" }
+                            ]
+                        }
+                    }
+                }
+                );
+                V.on("payment.success", function(payment) {
+                    var data = {
+                        DataDescriptor: "COMMON.VCO.ONLINE.PAYMENT",
+                        DataValue: payment.encPaymentData,
+                        DataKey: payment.encKey,
+                        CallId: payment.callid
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: decryptDataUrl,
+                        data: data,
+                        success: function(data) {
+                            $("#decryptedData").html(data);
+                        },
+                        error: function() {
+                            showNotify("error", "danger");
+                        }
+                    });
+                });
+                V.on("payment.cancel", function(payment) { alert("cancel") });
+                V.on("payment.error", function(payment, error) { alert("error") });
+            }
+        </script>
+        <img alt="Visa Checkout" class="v-button" role="button" src="https://sandbox.secure.checkout.visa.com/wallet-services-web/xo/button.png?cardBrands=VISA,MASTERCARD,DISCOVER,AMEX" />
+        <script type="text/javascript" src="https://sandbox-assets.secure.checkout.visa.com/checkout-widget/resources/js/integration/v1/sdk.js">
+        </script>
+    </div>
+    <div id="decryptedData"></div>
+</div>
+

@@ -364,6 +364,83 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
             }
         }
 
+        public ANetDecryptPaymentDataResponse DecryptVisaCheckoutPaymentData(EncryptVisaCheckoutDataRequest request, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
+            Init(enviroment, appLoginId, transactionKey);
+
+            decryptPaymentDataRequest AnetRequest = new decryptPaymentDataRequest {
+                callId = request.CallId,
+                opaqueData = new opaqueDataType {
+                    dataDescriptor = request.DataDescriptor,
+                    dataKey = request.DataKey,
+                    dataValue = request.DataValue
+                }
+            };
+
+            decryptPaymentDataController controller = new decryptPaymentDataController(AnetRequest);
+            decryptPaymentDataResponse response = controller.ExecuteWithApiResponse();
+
+            if (response.messages.resultCode == messageTypeEnum.Ok) {
+                ANetDecryptPaymentDataResponse result = new ANetDecryptPaymentDataResponse {
+                    ShippingInfo = new ShippingInfo {
+                        Address = response.shippingInfo.address,
+                        City = response.shippingInfo.city,
+                        Country = response.shippingInfo.country,
+                        FirstName = response.shippingInfo.firstName,
+                        LastName = response.shippingInfo.lastName,
+                        State = response.shippingInfo.state,
+                        Zip = response.shippingInfo.zip
+                    },
+                    BillingInfo = new BillingInfo {
+                        Address = response.billingInfo.address,
+                        City = response.billingInfo.city,
+                        Country = response.billingInfo.country,
+                        FirstName = response.billingInfo.firstName,
+                        LastName = response.billingInfo.lastName,
+                        State = response.billingInfo.state,
+                        Zip = response.billingInfo.zip,
+                        Email = response.billingInfo.email
+                    },
+                    CardInfo = new ANetCardModel {
+                        Number = response.cardInfo.cardNumber,
+                        ExpirationDate = response.cardInfo.expirationDate
+                    },
+                    PaymentDetails = new PaymentDetails {
+                        Amount = decimal.Parse(response.paymentDetails.amount),
+                        Currency = response.paymentDetails.currency
+                    }
+                };
+
+                _CreateTransactionFromVisaCheckout(request, result.PaymentDetails.Amount, appLoginId, transactionKey, AuthorizeEnviromentsEnum.Sandbox);
+
+                return result;
+            } else {
+                return null;
+            }
+        }
+
+        private void _CreateTransactionFromVisaCheckout(EncryptVisaCheckoutDataRequest request, decimal amount, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
+            Init(enviroment, appLoginId, transactionKey);
+
+            createTransactionRequest AnetRequest = new createTransactionRequest {
+                transactionRequest = new transactionRequestType {
+                    transactionType = transactionTypeEnum.authCaptureTransaction.ToString(),
+                    amount = amount,
+                    payment = new paymentType {
+                        Item = new opaqueDataType {
+                            dataDescriptor = request.DataDescriptor,
+                            dataKey = request.DataKey,
+                            dataValue = request.DataValue
+                        }
+                    },
+                    callId = request.CallId
+                }
+            };
+
+            createTransactionController controller = new createTransactionController(AnetRequest);
+            controller.Execute();
+            //createTransactionResponse response = controller.ExecuteWithApiResponse();
+        }
+
         #endregion
     }
 }

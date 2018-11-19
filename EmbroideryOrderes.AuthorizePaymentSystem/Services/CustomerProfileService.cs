@@ -23,6 +23,7 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
                     response.ResponseObject = new CustomerProfileResponse {
                         CustomerProfileId = apiResponse.customerProfileId,
                         CustomerPaymentProfileIds = apiResponse.customerPaymentProfileIdList.ToList(),
+                        CustomerShippingProfileIds = apiResponse.customerShippingAddressIdList?.ToList()
                     };
                 }
             } else if (response != null) {
@@ -90,6 +91,27 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
                             firstName = profileModel.BillTo.FirstName,
                             lastName = profileModel.BillTo.LastName
                         }
+                    };
+                }
+            }
+
+            if (model.Shippings.Any()) {
+                customerProfile.shipToList = new customerAddressType[model.Shippings.Count];
+
+                for (int i = 0; i < model.Shippings.Count; i++) {
+                    ANetAddressModel profileModel = model.Shippings[i];
+
+                    customerProfile.shipToList[i] = new customerAddressType {
+                        address = profileModel.Address,
+                        city = profileModel.City,
+                        company = profileModel.Company,
+                        country = profileModel.Country,
+                        email = profileModel.Email,
+                        zip = profileModel.Zip,
+                        phoneNumber = profileModel.PhoneNumber,
+                        state = profileModel.State,
+                        firstName = profileModel.FirstName,
+                        lastName = profileModel.LastName
                     };
                 }
             }
@@ -167,6 +189,50 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Services {
             createCustomerPaymentProfileResponse ApiResponse = controller.ExecuteWithApiResponse();
 
             return _ProcessCustomerPaymentProfileResponse(response, ApiResponse, loggerMessage);
+        }
+
+        public ANetResponse<List<ANetPaymentProfileInfo>> GetPaymentProfiles(string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment) {
+            Init(enviroment, appLoginId, transactionKey);
+
+            getCustomerProfileIdsRequest profileIdsRequest = new getCustomerProfileIdsRequest();
+            getCustomerProfileIdsController customerProfileIdsController = new getCustomerProfileIdsController(profileIdsRequest);
+            getCustomerProfileIdsResponse customerProfileIdsResponse = customerProfileIdsController.ExecuteWithApiResponse();
+
+            if (customerProfileIdsResponse == null || customerProfileIdsResponse.messages.resultCode != messageTypeEnum.Ok)
+                return new ANetResponse<List<ANetPaymentProfileInfo>> { IsSuccessful = false, Message = "Unsuccessfull response" };
+
+            List<ANetPaymentProfileInfo> result = new List<ANetPaymentProfileInfo>();
+
+            foreach (string id in customerProfileIdsResponse.ids) {
+                getCustomerProfileRequest profileRequest = new getCustomerProfileRequest {
+                    customerProfileId = id,
+                    includeIssuerInfo = true
+                };
+
+                getCustomerProfileController customerProfileController = new getCustomerProfileController(profileRequest);
+                getCustomerProfileResponse customerResponse = customerProfileController.ExecuteWithApiResponse();
+
+                if (customerResponse == null || customerResponse.messages.resultCode != messageTypeEnum.Ok) continue;
+
+                var profile = customerResponse.profile;
+
+                if (profile.paymentProfiles == null) continue;
+
+                result.Add(new ANetPaymentProfileInfo {
+                    PaymentProfileId = profile.paymentProfiles[0]?.customerPaymentProfileId,
+                    ProfileId = profile.customerProfileId,
+                    Company = profile.paymentProfiles[0]?.billTo?.company ?? profile.merchantCustomerId,
+                    FirstName = profile.paymentProfiles[0]?.billTo?.firstName,
+                    LastName = profile.paymentProfiles[0]?.billTo?.lastName,
+                    CardNum = (profile.paymentProfiles[0]?.payment?.Item as creditCardMaskedType)?.cardNumber,
+                    Email = profile.email ?? profile.paymentProfiles[0]?.billTo?.email
+                });
+            }
+
+            return new ANetResponse<List<ANetPaymentProfileInfo>> {
+                IsSuccessful = true,
+                ResponseObject = result
+            };
         }
 
         #endregion

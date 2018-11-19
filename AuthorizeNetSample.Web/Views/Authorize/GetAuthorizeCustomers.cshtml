@@ -1,0 +1,55 @@
+﻿@model List<AuthorizeNetSample.Web.Models.Authorize.CustomerPaymentProfileInfoViewModel>
+@{
+    ViewBag.Title = "Get Authorize Payment Profiles";
+}
+
+<div class="container">
+    <h2>Payment Profiles</h2>
+    <hr />
+    <table class="table table-hover col-md-12">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Company</th>
+                <th>Card Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any()) {
+                <tr>
+                    <td>
+                        <b>
+                            No Payment Profiles Found
+                        </b>
+                    </td>
+                </tr>
+            } else {
+                foreach (var profile in Model) {
+                    <tr>
+                        <td>
+                            @profile.Email
+                        </td>
+                        <td>
+                            @profile.FirstName
+                        </td>
+                        <td>
+                            @profile.LastName
+                        </td>
+                        <td>
+                            @profile.Company
+                        </td>
+                        <td>
+                            @profile.CardNum
+                        </td>
+                        <td>
+                            <button class="btn btn-success chargeCustomerButton" data-profile-id="@profile.ProfileId" data-payment-profile-id="@profile.PaymentProfileId">Charge</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

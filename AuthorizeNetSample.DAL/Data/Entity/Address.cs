@@ -11,9 +11,10 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		public string ZIP { get; set; }
 		public string Country { get; set; }
 		public string Phone { get; set; }
+        public string AuthorizeId { get; set; }
 
-		//Navigation
-		public Guid? CustomerId { get; set; }
+        //Navigation
+        public Guid? CustomerId { get; set; }
 		public virtual Customer Customer { get; set; }
         public Guid? CreditCardId { get; set; }
         public virtual CreditCard CreditCard { get; set; }

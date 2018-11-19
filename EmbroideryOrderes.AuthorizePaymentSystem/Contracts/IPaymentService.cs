@@ -16,5 +16,6 @@ namespace EmbroideryOrderes.AuthorizePaymentSystem.Contracts {
         List<ANetPaymentCharge> GetUnsettledPayments(string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
         ANetPaymentCharge GetCharge(string chargeId, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
         List<ANetPaymentCharge> GetCustomerCharges(string customerId, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment, string paymentProfileId = null);
+        ANetDecryptPaymentDataResponse DecryptVisaCheckoutPaymentData(EncryptVisaCheckoutDataRequest request, string appLoginId, string transactionKey, AuthorizeEnviromentsEnum enviroment);
     }
 }

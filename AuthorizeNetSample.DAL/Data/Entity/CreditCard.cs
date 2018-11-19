@@ -17,9 +17,10 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		public string CardNumHash { get; set; }
 		[Required]
 		public string ExpDate { get; set; }
+        public string AuthorizeId { get; set; }
 
-		//Navigation
-		public Guid CustomerId { get; set; }
+        //Navigation
+        public Guid CustomerId { get; set; }
 		public virtual Customer Customer { get; set; }
         public virtual ICollection<Address> BillingAddresses { get; set; }
 	}

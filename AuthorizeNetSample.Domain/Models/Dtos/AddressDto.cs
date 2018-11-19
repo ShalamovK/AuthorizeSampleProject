@@ -9,6 +9,7 @@ namespace AuthorizeNetSample.Domain.Models.Dtos {
         public string ZIP { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        public string AuthorizeId { get; set; }
         public Guid? CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }
         public Guid? CreditCardId { get; set; }

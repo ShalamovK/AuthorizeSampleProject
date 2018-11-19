@@ -57,12 +57,15 @@
     <Compile Include="Models\Payment\ANetAddressModel.cs" />
     <Compile Include="Models\Payment\ANetCardModel.cs" />
     <Compile Include="Models\Payment\ANetCreditCardPaymentBase.cs" />
+    <Compile Include="Models\Payment\ANetDecryptPaymentDataResponse.cs" />
     <Compile Include="Models\Payment\ANetPaymentCharge.cs" />
     <Compile Include="Models\Payment\CreditCardPayment.cs" />
     <Compile Include="Models\Payment\ANetRefundModel.cs" />
     <Compile Include="Models\Payment\Base\PaymentBase.cs" />
+    <Compile Include="Models\Payment\EncryptVisaCheckoutDataRequest.cs" />
     <Compile Include="Models\Payment\ProfilePayment.cs" />
     <Compile Include="Models\Profile\ANetCustomerProfileModel.cs" />
+    <Compile Include="Models\Profile\ANetPaymentProfileInfo.cs" />
     <Compile Include="Models\Profile\PaymentProfileModel.cs" />
     <Compile Include="Responses\Base\ANetResponse.cs" />
     <Compile Include="Contracts\IPaymentService.cs" />

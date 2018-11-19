@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201811100911479_Init.Designer.cs">
       <DependentUpon>201811100911479_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811191539297_AddAuthorizeIds.cs" />
+    <Compile Include="Migrations\201811191539297_AddAuthorizeIds.Designer.cs">
+      <DependentUpon>201811191539297_AddAuthorizeIds.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -77,6 +81,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811100911479_Init.resx">
       <DependentUpon>201811100911479_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811191539297_AddAuthorizeIds.resx">
+      <DependentUpon>201811191539297_AddAuthorizeIds.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

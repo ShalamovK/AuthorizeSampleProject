@@ -1,0 +1,130 @@
+﻿@using AuthorizeNetSample.Web.Helpers
+@model AuthorizeNetSample.Web.Models.Authorize.CreateCustomerAccountViewModel
+@{
+    ViewBag.Title = "Create Customer Profile";
+    AjaxOptions ajaxOptions = new AjaxOptions {
+        HttpMethod = "POST",
+        OnSuccess = "createCustomerResult(data)"
+    };
+}
+
+<div class="container">
+    <h2>Charge Customer</h2>
+    <hr />
+    @using (Ajax.BeginForm("CreateCustomerProfile", "Authorize", ajaxOptions)) {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <h4><b>Customer Info</b></h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Email, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Description, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Id, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.Id, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4><b>Card Info</b></h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreditCard.CardNum, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.CreditCard.CardNum, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CreditCard.ExpDate, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.CreditCard.ExpDate, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <h4><b>Shipping Info</b></h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Address, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.Address, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.City, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.City, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.State, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.State, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Country, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.Country, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Zip, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.Zip, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.FirstName, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.FirstName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.LastName, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.ShippingAddress.LastName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4><b>Billing Info</b></h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Address, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.Address, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.City, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.City, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.State, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.State, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Country, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.Country, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Zip, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.Zip, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.FirstName, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.FirstName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.LastName, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.LastName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Email, new { @class = "control-label" })
+                    @Html.TextBoxFor(x => x.BillingAddress.Email, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Create Profile" />
+            </div>
+        </div>
+    }
+    <div id="createCustomerResult"></div>
+</div>
+
+@section scripts {
+    <script>
+        function createCustomerResult(data) {
+            $("#createCustomerResult").html(data);
+        }
+    </script>
+}

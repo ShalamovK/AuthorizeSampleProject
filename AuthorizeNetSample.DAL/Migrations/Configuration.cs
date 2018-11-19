@@ -14,7 +14,6 @@ namespace AuthorizeNetSample.DAL.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            Database.SetInitializer(new DropCreateDatabaseAlways<AuthorizeDbContext>());
         }
 
 		protected override void Seed(AuthorizeDbContext context)

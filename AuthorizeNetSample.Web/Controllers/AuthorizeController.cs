@@ -6,6 +6,13 @@ using AuthorizeNetSample.Web.Controllers.Base;
 using AuthorizeNetSample.Web.Models;
 using AuthorizeNetSample.Web.Models.Authorize;
 using AutoMapper;
+using EmbroideryOrderes.AuthorizePaymentSystem.Common;
+using EmbroideryOrderes.AuthorizePaymentSystem.Contracts;
+using EmbroideryOrderes.AuthorizePaymentSystem.Models.Payment;
+using EmbroideryOrderes.AuthorizePaymentSystem.Models.Profile;
+using EmbroideryOrderes.AuthorizePaymentSystem.Responses;
+using EmbroideryOrderes.AuthorizePaymentSystem.Responses.Base;
+using EmbroideryOrderes.AuthorizePaymentSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +26,12 @@ using System.Web.Mvc;
 namespace AuthorizeNetSample.Web.Controllers {
     public class AuthorizeController : BaseController
     {
+        public readonly ICustomerProfileService _customerProfileService;
+
         public AuthorizeController(IServiceHost serviceHost)
-            : base(serviceHost) { }
+            : base(serviceHost) {
+            _customerProfileService = new CustomerProfileService();
+        }
 
         public ActionResult Index()
         {
@@ -159,6 +170,125 @@ namespace AuthorizeNetSample.Web.Controllers {
 
             return PartialView("Partials/_ChargeResponsePartial", paymentViewModel);
         }
+
+        [HttpGet]
+        public ActionResult VisaCheckout() {
+            string VisaCheckoutApiKey = WebConfigurationManager.AppSettings["VisaCheckoutApiKey"];
+            VisaCheckoutPaymentViewModel model = new VisaCheckoutPaymentViewModel {
+                ApiKey = VisaCheckoutApiKey
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult EncryptedVisaCheckoutData(EncryptVisaCheckoutDataViewModel model) {
+            return PartialView("Partials/_EncryptedVisaCheckoutDataPartial", model);
+        }
+
+        [HttpPost]
+        public PartialViewResult EncryptVisaCheckoutData(EncryptVisaCheckoutDataViewModel model) {
+            EncryptVisaCheckoutDataDto request = Mapper.Map<EncryptVisaCheckoutDataDto>(model);
+
+            DecryptedVisaCheckoutDataDto response = _serviceHost.GetService<IAuthorizeService>().DecryptVisaCheckoutPaymentData(request);
+
+            return PartialView("Partials/_DecryptedVisaCheckoutDataPartial", Mapper.Map<DecryptedVisaCheckoutDataViewModel>(response));
+        }
+
+        [HttpGet]
+        public ActionResult CreateCustomerProfile() {
+            CreateCustomerAccountViewModel model = new CreateCustomerAccountViewModel {
+                Id = Guid.NewGuid()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult CreateCustomerProfile(CreateCustomerAccountViewModel model) {
+            ANetCustomerProfileModel profileModel = new ANetCustomerProfileModel {
+                Email = model.Email,
+                Id = model.Id.ToString(),
+                Name = model.Description,
+                PaymentProfiles = new List<PaymentProfileModel> {
+                    new PaymentProfileModel {
+                        BillTo = new ANetAddressModel {
+                            Address = model.BillingAddress.Address,
+                            City = model.BillingAddress.City,
+                            Country = model.BillingAddress.Country,
+                            Email = model.BillingAddress.Email,
+                            State = model.BillingAddress.State,
+                            Zip = model.BillingAddress.Zip,
+                            FirstName = model.BillingAddress.FirstName,
+                            LastName = model.BillingAddress.LastName
+                        },
+                        CreditCard = new ANetCardModel {
+                            ExpirationDate = model.CreditCard.ExpDate,
+                            Number = model.CreditCard.CardNum
+                        },
+                        Default = true,
+                    }
+                },
+                Shippings = new List<ANetAddressModel> {
+                    new ANetAddressModel {
+                        Address = model.ShippingAddress.Address,
+                        City = model.ShippingAddress.City,
+                        Country = model.ShippingAddress.Country,
+                        State = model.ShippingAddress.State,
+                        Zip = model.ShippingAddress.Zip
+                    }
+                }
+            };
+
+            string ApiLoginId = WebConfigurationManager.AppSettings["AuthorizeApiLoginId"];
+            string TransactionKey = WebConfigurationManager.AppSettings["AuthorizeTransactionKey"];
+
+            ANetResponse<CustomerProfileResponse> response = _customerProfileService.CreateCustomerProfile(profileModel, ApiLoginId, TransactionKey, AuthorizeEnviromentsEnum.Sandbox);
+
+            if (!response.IsSuccessful) return PartialView("Partials/_CreateCustomerProfileResponse", new CustomerAccountResponseViewModel());
+
+            CustomerAccountResponseViewModel responseModel = new CustomerAccountResponseViewModel {
+                CustomerId = response.ResponseObject.CustomerProfileId,
+                PaymentProfiles = response.ResponseObject.CustomerPaymentProfileIds,
+                ShippingProfiles = response.ResponseObject.CustomerShippingProfileIds
+            };
+
+            _serviceHost.GetService<ICustomerService>().CreateCustomer(Mapper.Map<ANetCustomerProfileModelDto>(profileModel), Mapper.Map<CustomerAccountResponseDto>(responseModel));
+
+            return PartialView("Partials/_CreateCustomerProfileResponse", responseModel);
+        }
+
+        [HttpGet]
+        public ActionResult GetAuthorizeCustomers() {
+            //var response = _serviceHost.GetService<ICustomerService>().GetAuthorizeCustomersList();
+
+            //List<CustomerPaymentProfileInfoViewModel> model = new List<CustomerPaymentProfileInfoViewModel>();
+            //if (response != null) {
+            //    foreach (CustomerDto customer in response) {
+            //        model.Add(new CustomerPaymentProfileInfoViewModel {
+            //            Company = $"{customer.FirstName} {customer.LastName} Company",
+            //            FirstName = customer.FirstName,
+            //            LastName = customer.LastName,
+            //            CardNum = $"XXXX{customer.CreditCards.First().LastFourDigits}",
+            //            PaymentProfileId = customer.CreditCards.First().AuthorizeId,
+            //            ProfileId = customer.AuthorizeId
+            //        });
+            //    }
+            //}
+
+            string ApiLoginId = WebConfigurationManager.AppSettings["AuthorizeApiLoginId"];
+            string TransactionKey = WebConfigurationManager.AppSettings["AuthorizeTransactionKey"];
+
+            var response = _customerProfileService.GetPaymentProfiles(ApiLoginId, TransactionKey, AuthorizeEnviromentsEnum.Sandbox);
+
+            List<CustomerPaymentProfileInfoViewModel> model = new List<CustomerPaymentProfileInfoViewModel>();
+            if (response.IsSuccessful) {
+                model = Mapper.Map<List<CustomerPaymentProfileInfoViewModel>>(response.ResponseObject);
+            }
+
+            return View(model);
+        }
+
         #endregion
     }
 }

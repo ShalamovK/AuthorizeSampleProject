@@ -154,6 +154,9 @@
     <Reference Include="Unity.ServiceLocation, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.3.1\lib\net45\Unity.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="VisaCheckout, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VisaCheckout.1.1.0.0\lib\net40\VisaCheckout.dll</HintPath>
+    </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
@@ -208,6 +211,7 @@
     <Compile Include="Controllers\AuthorizeController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PresentationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -216,11 +220,18 @@
     <Compile Include="Ioc\UnityResolver.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\Authorize\AccessTokenResponse.cs" />
+    <Compile Include="Models\Authorize\CreateCustomerAccountViewModel.cs" />
+    <Compile Include="Models\Authorize\CustomerAccountResponseViewModel.cs" />
+    <Compile Include="Models\Authorize\CustomerPaymentProfileInfoViewModel.cs" />
+    <Compile Include="Models\Authorize\DecryptedVisaCheckoutDataViewModel.cs" />
+    <Compile Include="Models\Authorize\EncryptVisaCheckoutDataViewModel.cs" />
     <Compile Include="Models\Authorize\OauthClient.cs" />
+    <Compile Include="Models\Authorize\VisaCheckoutPaymentViewModel.cs" />
     <Compile Include="Models\Base\BaseEntityViewModel.cs" />
     <Compile Include="Models\ChargeCustomerViewModel.cs" />
     <Compile Include="Models\CreditCardViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
+    <Compile Include="Models\DispalyNameAttribute.cs" />
     <Compile Include="Models\GetAccessTokenPageViewModel.cs" />
     <Compile Include="Models\GetRequestTokenPageViewModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
@@ -248,6 +259,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Properties\LICENSE.md" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -282,6 +294,14 @@
     <Content Include="Views\Authorize\Customers.cshtml" />
     <Content Include="Views\Authorize\ChargeCustomer.cshtml" />
     <Content Include="Views\Authorize\Partials\_ChargeResponsePartial.cshtml" />
+    <Content Include="Views\Presentation\Title.cshtml" />
+    <Content Include="Views\Shared\_PresentationLayout.cshtml" />
+    <Content Include="Views\Authorize\VisaCheckout.cshtml" />
+    <Content Include="Views\Authorize\Partials\_DecryptedVisaCheckoutDataPartial.cshtml" />
+    <Content Include="Views\Authorize\Partials\_EncryptedVisaCheckoutDataPartial.cshtml" />
+    <Content Include="Views\Authorize\CreateCustomerProfile.cshtml" />
+    <Content Include="Views\Authorize\Partials\_CreateCustomerProfileResponse.cshtml" />
+    <Content Include="Views\Authorize\GetAuthorizeCustomers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

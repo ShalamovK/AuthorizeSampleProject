@@ -7,5 +7,6 @@ namespace AuthorizeNetSample.Domain.Interfaces.Services {
         AuthorizeConfigDto GetConfig();
         void StoreTokens(AuthorizeConfigDto configDto);
         AuthorizePaymentResponse ChargeCreditCard(ChargeCustomerDto charge);
+        DecryptedVisaCheckoutDataDto DecryptVisaCheckoutPaymentData(EncryptVisaCheckoutDataDto request);
     }
 }

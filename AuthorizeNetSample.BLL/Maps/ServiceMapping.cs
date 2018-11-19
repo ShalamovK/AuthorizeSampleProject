@@ -2,6 +2,7 @@
 using AuthorizeNetSample.Domain.Models.Authorize;
 using AuthorizeNetSample.Domain.Models.Dtos;
 using AutoMapper;
+using EmbroideryOrderes.AuthorizePaymentSystem.Models.Payment;
 using EmbroideryOrderes.AuthorizePaymentSystem.Responses;
 
 namespace AuthorizeNetSample.BLL.Maps {
@@ -25,6 +26,7 @@ namespace AuthorizeNetSample.BLL.Maps {
                  ForMember(trg => trg.Customer, opt => opt.MapFrom(src => src.Customer)).
                  ReverseMap();
             CreateMap<PaymentResponse, AuthorizePaymentResponse>();
+            CreateMap<EncryptVisaCheckoutDataDto, EncryptVisaCheckoutDataRequest>();            
         }
     }
 }

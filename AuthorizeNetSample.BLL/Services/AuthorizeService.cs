@@ -92,5 +92,46 @@ namespace AuthorizeNetSample.BLL.Services {
 
             return Mapper.Map<AuthorizePaymentResponse>(response.ResponseObject);
         }
+
+        public DecryptedVisaCheckoutDataDto DecryptVisaCheckoutPaymentData(EncryptVisaCheckoutDataDto request) {
+            EncryptVisaCheckoutDataRequest AnetRequest = Mapper.Map<EncryptVisaCheckoutDataRequest>(request);
+
+            string AppLoginId = WebConfigurationManager.AppSettings["AuthorizeApiLoginId"];
+            string TransactionKey = WebConfigurationManager.AppSettings["AuthorizeTransactionKey"];
+
+            var response = _paymentService.DecryptVisaCheckoutPaymentData(AnetRequest, AppLoginId, TransactionKey, AuthorizeEnviromentsEnum.Sandbox);
+
+            if (response == null) return null;
+
+            return new DecryptedVisaCheckoutDataDto {
+                ShippingInfo = new ShippingInfoDto {
+                    Address = response.ShippingInfo.Address,
+                    City = response.ShippingInfo.City,
+                    Country = response.ShippingInfo.Country,
+                    FirstName = response.ShippingInfo.FirstName,
+                    LastName = response.ShippingInfo.LastName,
+                    State = response.ShippingInfo.State,
+                    Zip = response.ShippingInfo.Zip
+                },
+                BillingInfo = new BillingInfoDto {
+                    Address = response.BillingInfo.Address,
+                    City = response.BillingInfo.City,
+                    Country = response.BillingInfo.Country,
+                    FirstName = response.BillingInfo.FirstName,
+                    LastName = response.BillingInfo.LastName,
+                    State = response.BillingInfo.State,
+                    Zip = response.BillingInfo.Zip,
+                    Email = response.BillingInfo.Email
+                },
+                CardInfo = new CardInfoDto {
+                    ExpDate = response.CardInfo.ExpirationDate,
+                    Number = response.CardInfo.Number
+                },
+                PaymentDetails = new PaymentDetailsDto {
+                    Amount = response.PaymentDetails.Amount,
+                    Currency = response.PaymentDetails.Currency
+                }
+            };
+        }
     }
 }

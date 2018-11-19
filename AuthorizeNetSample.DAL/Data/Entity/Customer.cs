@@ -18,6 +18,7 @@ namespace AuthorizeNetSample.DAL.Data.Entity
 		public string FirstName { get; set; }
 		[Required]
 		public string LastName { get; set; }
+        public string AuthorizeId { get; set; }
 
 		//Navigation
 		public virtual ICollection<Payment> Payments { get; set; }
